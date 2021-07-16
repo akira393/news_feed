@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:news_feed/screens/home_screen.dart';
 import 'package:news_feed/style/style.dart';
 
-void main()=>runApp(MyApp());
+void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
-  const MyApp({ Key? key }) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -20,8 +21,6 @@ class _MyAppState extends State<MyApp> {
         fontFamily: BoldFont,
       ),
       home: HomeScreen(),
-      
-      
     );
   }
 }
