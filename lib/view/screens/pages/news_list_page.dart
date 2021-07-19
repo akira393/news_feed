@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_feed/data/search_type.dart';
+import 'package:news_feed/repository/model/news_model.dart';
+import 'package:news_feed/view/components/article_tile.dart';
 import 'package:news_feed/view/components/category_chips.dart';
 import 'package:news_feed/data/category_info.dart';
 import 'package:news_feed/view/components/search_bar.dart';
@@ -11,6 +13,13 @@ class NewsListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<NewsListViewModel>(context, listen: false);
+    final primaryColor = Theme.of(context).primaryColor;
+    if (!viewModel.isLoading && viewModel.articals.isEmpty) {
+      Future(() => viewModel.getNews(
+          searchType: SearchType.CATEGORY, category: categories[0]));
+    }
+
     return SafeArea(
         child: Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -28,7 +37,24 @@ class NewsListPage extends StatelessWidget {
             CategoryChips(
                 onCategorySelected: (category) =>
                     getCategoryNews(context, category)),
-            Expanded(child: Center(child: CircularProgressIndicator()))
+            Expanded(
+              child: Consumer<NewsListViewModel>(
+                builder: (context, model, child) {
+                  return model.isLoading
+                      ? Center(
+                          child: CircularProgressIndicator(
+                          color: primaryColor,
+                        ))
+                      : ListView.builder(
+                          itemCount: model.articals.length,
+                          itemBuilder: (context, int position) => ArticleTile(
+                              article: model.articals[position],
+                              onArticleclicked: (article) =>
+                                  _onArticleclicked(article, context)),
+                        );
+                },
+              ),
+            )
           ],
         ),
       ),
@@ -36,12 +62,12 @@ class NewsListPage extends StatelessWidget {
   }
 
   //TODO: 記事更新処理
-  Future<void>onRefresh() async{
+  Future<void> onRefresh() async {
     print("onRefresh");
   }
 
-  //TODO: キーワード記事検索取得
-  Future<void>geKeywordNews(BuildContext context, keyword) async{
+  Future<void> geKeywordNews(BuildContext context, keyword) async {
+    print(keyword);
     final viewModel = Provider.of<NewsListViewModel>(context, listen: false);
     await viewModel.getNews(
       searchType: SearchType.KEYWORD,
@@ -50,13 +76,16 @@ class NewsListPage extends StatelessWidget {
     );
   }
 
-  //TODO: カテゴリー記事取得
-  Future<void>getCategoryNews(BuildContext context, Category category) async{
+  Future<void> getCategoryNews(BuildContext context, Category category) async {
     final viewModel = Provider.of<NewsListViewModel>(context, listen: false);
     await viewModel.getNews(
       searchType: SearchType.CATEGORY,
       category: category,
       // keyWord: keyword
     );
+  }
+
+  _onArticleclicked(Article article, BuildContext context) {
+    print(article.url);
   }
 }

@@ -18,21 +18,21 @@ class NewsListViewModel extends ChangeNotifier {
   bool _isLoading = false;
   get isLoading => _isLoading;
 
-  List<Article> _articals=[];
-  get articals=>_articals;
+  List<Article> _articles = [];
+  get articals => _articles;
 
-  Future<void>getNews({
+  Future<void> getNews({
     required SearchType searchType,
     Category? category,
     String? keyWord,
-  }) async{
+  }) async {
     _searchType = searchType;
     _category = category ?? categories[0];
     _keyWord = keyWord ?? "";
     _isLoading = true;
     notifyListeners();
 
-    _articals=await _newsRepository.getNews(
+    _articles = await _newsRepository.getNews(
         searchType: _searchType, category: _category, keyWord: _keyWord);
     _isLoading = false;
     notifyListeners();

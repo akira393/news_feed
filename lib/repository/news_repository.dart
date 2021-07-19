@@ -18,17 +18,17 @@ class NewsRepository {
     List<Article> results = [];
     switch (searchType) {
       case SearchType.HEAD_LINE:
-        final requestUrl = Uri.parse(BASE_URL + "&api_key?=$API_KEY");
+        final requestUrl = Uri.parse(BASE_URL + "&apiKey=$API_KEY");
         response = await http.get(requestUrl);
         break;
       case SearchType.KEYWORD:
         final requestUrl = Uri.parse(
-            BASE_URL + "&q=$keyWord" + "&pageSize=30&api_key?=$API_KEY");
+            BASE_URL + "&q=$keyWord" + "&pageSize=30&apiKey=$API_KEY");
         response = await http.get(requestUrl);
         break;
       case SearchType.CATEGORY:
         final requestUrl = Uri.parse(
-            BASE_URL + "&category=${category?.nameEn}&api_key?=$API_KEY");
+            BASE_URL + "&category=${category?.nameEn}&apiKey=$API_KEY");
         response = await http.get(requestUrl);
         break;
     }
