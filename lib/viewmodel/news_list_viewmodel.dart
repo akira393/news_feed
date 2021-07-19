@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_feed/data/category_info.dart';
 import 'package:news_feed/data/search_type.dart';
+import 'package:news_feed/repository/model/news_model.dart';
 import 'package:news_feed/repository/news_repository.dart';
 
 class NewsListViewModel extends ChangeNotifier {
@@ -17,6 +18,9 @@ class NewsListViewModel extends ChangeNotifier {
   bool _isLoading = false;
   get isLoading => _isLoading;
 
+  List<Article> _articals=[];
+  get articals=>_articals;
+
   Future<void>getNews({
     required SearchType searchType,
     Category? category,
@@ -28,8 +32,7 @@ class NewsListViewModel extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    //TODO
-    await _newsRepository.getNews(
+    _articals=await _newsRepository.getNews(
         searchType: _searchType, category: _category, keyWord: _keyWord);
     _isLoading = false;
     notifyListeners();
