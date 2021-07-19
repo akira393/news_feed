@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:news_feed/data/search_type.dart';
 import 'package:news_feed/view/components/category_chips.dart';
 import 'package:news_feed/data/category_info.dart';
 import 'package:news_feed/view/components/search_bar.dart';
+import 'package:news_feed/viewmodel/news_list_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 class NewsListPage extends StatelessWidget {
   const NewsListPage({Key? key}) : super(key: key);
@@ -20,26 +23,40 @@ class NewsListPage extends StatelessWidget {
         child: Column(
           children: [
             SearchBar(
-              onSearch: (keyword)=>geKeywordNews(context,keyword),
+              onSearch: (keyword) => geKeywordNews(context, keyword),
             ),
-            CategoryChips(onCategorySelected: (category)=>getCategoryNews(context,category)),
+            CategoryChips(
+                onCategorySelected: (category) =>
+                    getCategoryNews(context, category)),
             Expanded(child: Center(child: CircularProgressIndicator()))
           ],
         ),
       ),
     ));
   }
+
   //TODO: 記事更新処理
-  onRefresh() {
+  Future<void>onRefresh() async{
     print("onRefresh");
   }
+
   //TODO: キーワード記事検索取得
-  geKeywordNews(BuildContext context, keyword) {
-    print("getkeywordnews");
-    print(keyword);
+  Future<void>geKeywordNews(BuildContext context, keyword) async{
+    final viewModel = Provider.of<NewsListViewModel>(context, listen: false);
+    await viewModel.getNews(
+      searchType: SearchType.KEYWORD,
+      keyWord: keyword,
+      category: categories[0],
+    );
   }
+
   //TODO: カテゴリー記事取得
-  getCategoryNews(BuildContext context, Category category) {
-    print("getcategoryNews:${category.nameJp}");
+  Future<void>getCategoryNews(BuildContext context, Category category) async{
+    final viewModel = Provider.of<NewsListViewModel>(context, listen: false);
+    await viewModel.getNews(
+      searchType: SearchType.CATEGORY,
+      category: category,
+      // keyWord: keyword
+    );
   }
 }
