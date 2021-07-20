@@ -22,7 +22,7 @@ class ImageFromUrl extends StatelessWidget {
           ),
         ),
         errorWidget: (context, url, error) => const Icon(Icons.broken_image),
-        fit: BoxFit.fill
+        fit: BoxFit.cover
       );
     }
   }

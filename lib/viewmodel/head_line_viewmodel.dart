@@ -4,7 +4,7 @@ import 'package:news_feed/data/search_type.dart';
 import 'package:news_feed/repository/model/news_model.dart';
 import 'package:news_feed/repository/news_repository.dart';
 
-class NewsListViewModel extends ChangeNotifier {
+class HeadLineViewModel extends ChangeNotifier {
   final NewsRepository _newsRepository = NewsRepository();
 
   SearchType _searchType = SearchType.HEAD_LINE;
@@ -21,20 +21,14 @@ class NewsListViewModel extends ChangeNotifier {
   List<Article> _articles = [];
   get articles => _articles;
 
-  Future<void> getNews({
-    required SearchType searchType,
-    Category? category,
-    String? keyWord,
-  }) async {
+  Future<void> getheadLines({required SearchType searchType}) async {
     _searchType = searchType;
-    _category = category ?? categories[0];
-    _keyWord = keyWord ?? "";
     _isLoading = true;
     notifyListeners();
 
-    _articles = await _newsRepository.getNews(
-        searchType: _searchType, category: _category, keyWord: _keyWord);
-    _isLoading = false;
+    _articles = await _newsRepository.getNews(searchType: searchType);
+
+    _isLoading=false;
     notifyListeners();
   }
 }
