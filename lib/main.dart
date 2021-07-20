@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:news_feed/repository/model/database.dart';
 import 'package:news_feed/view/screens/home_screen.dart';
 import 'package:news_feed/view/style/style.dart';
 import 'package:news_feed/viewmodel/head_line_viewmodel.dart';
 import 'package:news_feed/viewmodel/news_list_viewmodel.dart';
 import 'package:provider/provider.dart';
 
+late MyDatabase myDatabase;
 void main() {
+  myDatabase=MyDatabase();
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider<NewsListViewModel>(
@@ -13,7 +16,7 @@ void main() {
       ),
       ChangeNotifierProvider<HeadLineViewModel>(
         create: (_) => HeadLineViewModel(),
-      )
+      ),
     ],
     child: MyApp(),
   ));
