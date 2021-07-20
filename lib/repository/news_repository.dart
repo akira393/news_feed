@@ -3,12 +3,17 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:news_feed/data/category_info.dart';
 import 'package:news_feed/data/search_type.dart';
+import 'package:news_feed/repository/model/dao.dart';
 import 'package:news_feed/repository/model/news_model.dart';
+import 'package:news_feed/util/extentions.dart';
 
 class NewsRepository {
   static const BASE_URL = "https://newsapi.org/v2/top-headlines?country=jp";
   static const API_KEY = "b9b6c21472484911bf229e45ea976504";
 
+  final NewsDao _dao;
+
+  NewsRepository({dao}) : _dao = dao;
   Future<List<Article>> getNews({
     required SearchType searchType,
     Category? category,

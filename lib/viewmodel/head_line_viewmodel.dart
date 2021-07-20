@@ -5,7 +5,8 @@ import 'package:news_feed/repository/model/news_model.dart';
 import 'package:news_feed/repository/news_repository.dart';
 
 class HeadLineViewModel extends ChangeNotifier {
-  final NewsRepository _newsRepository = NewsRepository();
+  final NewsRepository _newsRepository;
+  HeadLineViewModel({repository}) : _newsRepository = repository;
 
   SearchType _searchType = SearchType.HEAD_LINE;
   get searchType => _searchType;
@@ -28,7 +29,7 @@ class HeadLineViewModel extends ChangeNotifier {
 
     _articles = await _newsRepository.getNews(searchType: searchType);
 
-    _isLoading=false;
+    _isLoading = false;
     notifyListeners();
   }
 }
