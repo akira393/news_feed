@@ -35,9 +35,19 @@ class NewsRepository {
     if (response.statusCode != 200) {
       throw Exception("request error");
     }
-    
+
     final responseBody = response.body;
-    results = News.fromJson(jsonDecode(responseBody)).articles;
+    // results = News.fromJson(jsonDecode(responseBody)).articles;
+    results = await inserAndReadFromDB(jsonDecode(responseBody));
+
     return results;
+  }
+
+  Future<List<Article>> inserAndReadFromDB(responseBody) async {
+    List<Article> articles = News.fromJson(responseBody).articles;
+    final articleRecords =
+        await _dao.insertReadFromDB(articles.toArticleRecords(articles));
+
+    return articleRecords.toArticles(articleRecords);
   }
 }
